@@ -1,0 +1,122 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+  margin: 0;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.chat-app {
+  background: #ffffff;
+  max-width: 500px;
+  width: 100%;
+  padding: 25px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.chat-app h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+  font-weight: 600;
+}
+
+.message {
+  background-color: #f0f0f0;
+  margin: 8px 0;
+  padding: 10px 15px;
+  border-radius: 8px;
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+.message:nth-child(even) {
+  background-color: #dbeafe;
+}
+
+.message::before {
+  content: "💬";
+  position: absolute;
+  left: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+}
+
+.message-input {
+  display: flex;
+  margin-top: 15px;
+  gap: 10px;
+}
+
+.message-input input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.2s ease;
+}
+
+.message-input input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.4);
+}
+
+.message-input button {
+  padding: 12px 18px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.message-input button:hover {
+  background-color: #0056b3;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .chat-app {
+    padding: 15px;
+  }
+  .message-input input {
+    padding: 10px;
+  }
+  .message-input button {
+    padding: 10px 14px;
+  }
+}

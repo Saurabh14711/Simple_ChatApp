@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat App</title>
+<style>
+   * {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+  margin: 0;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  animation: fadeBackground 5s ease-in-out infinite alternate;
+}
+
+.chat-app {
+  background: #ffffff;
+  max-width: 500px;
+  width: 100%;
+  padding: 25px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.6s ease-in-out;
+  transition: transform 0.3s ease-in-out;
+}
+
+.chat-app:hover {
+  transform: scale(1.01);
+}
+
+.chat-app h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+  font-weight: 600;
+  animation: popIn 0.6s ease;
+}
+
+.message {
+  background-color: #f0f0f0;
+  margin: 8px 0;
+  padding: 10px 15px;
+  border-radius: 8px;
+  position: relative;
+  animation: slideUp 0.3s ease;
+  transition: background-color 0.3s ease;
+}
+
+.message:hover {
+  background-color: #e0e0e0;
+}
+
+.message:nth-child(even) {
+  background-color: #dbeafe;
+}
+
+.message:nth-child(even):hover {
+  background-color: #c7d8fc;
+}
+
+.message::before {
+  content: "💬";
+  position: absolute;
+  left: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+}
+
+.message-input {
+  display: flex;
+  margin-top: 15px;
+  gap: 10px;
+  animation: fadeIn 0.4s ease-in;
+}
+
+.message-input input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+  font-size: 15px;
+}
+
+.message-input input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+}
+
+.message-input button {
+  padding: 12px 18px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.message-input button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.message-input button:active {
+  transform: scale(0.95);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeBackground {
+  0% {
+    background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+  }
+  100% {
+    background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  }
+}
+
+@media (max-width: 600px) {
+  .chat-app {
+    padding: 15px;
+  }
+
+  .message-input input {
+    padding: 10px;
+  }
+
+  .message-input button {
+    padding: 10px 14px;
+  }
+}
+
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React & Babel -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- React Code -->
+  <script type="text/babel">
+    function MessageList({ messages }) {
+      return (
+        <div>
+          {messages.map((msg) => (
+            <div key={msg.id} className="message">{msg.text}</div>
+          ))}
+        </div>
+      );
+    }
+
+    function MessageInput({ onSendMessage }) {
+      const [message, setMessage] = React.useState('');
+
+      const handleSend = () => {
+        if (message.trim()) {
+          onSendMessage(message);
+          setMessage('');
+        }
+      };
+
+      return (
+        <div className="message-input">
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Type your message"
+          />
+          <button onClick={handleSend}>Send</button>
+        </div>
+      );
+    }
+
+    class ChatApp extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          messages: [
+            { id: 1, text: "Hi there!" },
+            { id: 2, text: "Welcome to the chat!" }
+          ]
+        };
+      }
+
+      handleSendMessage = (message) => {
+        const newMessage = { id: Date.now(), text: message };
+        this.setState((prevState) => ({
+          messages: [...prevState.messages, newMessage]
+        }));
+
+        setTimeout(() => {
+          this.setState((prevState) => ({
+            messages: [...prevState.messages, { id: Date.now() + 1, text: "This is a reply!" }]
+          }));
+        }, 1000);
+      };
+
+      render() {
+        return (
+          <div className="chat-app">
+            <h2>React Chat App</h2>
+            <MessageList messages={this.state.messages} />
+            <MessageInput onSendMessage={this.handleSendMessage} />
+          </div>
+        );
+      }
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<ChatApp />);
+  </script>
+</body>
+</html>
