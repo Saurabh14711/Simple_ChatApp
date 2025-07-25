@@ -36,4 +36,4 @@ chat-app/
 
 1. Download or clone this repository:
 ```bash
-git clone 
+git clone :https://github.com/Saurabh14711/Simple_ChatApp.git
